@@ -13,14 +13,14 @@ const command = new Command<Option>()
   .arguments("[rootDir:string]")
   .option(
     "-o, --outDir [dir:string]",
-    "Redirect output structure to the directory."
+    "Redirect output structure to the directory.",
   )
   .action(async ({ outDir = "dist" }, rootDir = ".") => {
     const encoder = new TextEncoder();
     for await (const source of denolize(rootDir)) {
       const outputPath = path.join(
         outDir,
-        path.relative(rootDir, source.fileName)
+        path.relative(rootDir, source.fileName),
       );
       await Deno.mkdir(path.dirname(outputPath), { recursive: true });
       await Deno.writeFile(outputPath, encoder.encode(source.text));
