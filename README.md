@@ -6,13 +6,27 @@ Transpile the package created for Node into the Deno module.
 
 > Requires the `--unstable`, `--allow-read` and `--allow-write` flags.
 
+## Installation
+
+```bash
+$ deno install  --unstable --allow-read --allow-write \
+    -n denolize \
+    https://raw.githubusercontent.com/kamiazya/denolize/master/cmd.ts
+Download https://raw.githubusercontent.com/kamiazya/denolize/master/cmd.ts
+Download https://deno.land/x/cliffy/command.ts
+...
+Compile https://raw.githubusercontent.com/kamiazya/denolize/master/cmd.ts
+✅ Successfully installed denolize
+~/.deno/bin/denolize
+```
+
 ## Usage
 
 ```bash
-$ deno run --unstable --allow-read --allow-write /path/to/denolize/cmd.ts -h
+$ denolize -h
 
-  Usage:   denolize [rootDir:string]
-  Version: v0.0.1
+  Usage:   denolize [rootDir:string] [outDir:string]
+  Version: v0.0.2
 
   Description:
 
@@ -22,12 +36,17 @@ $ deno run --unstable --allow-read --allow-write /path/to/denolize/cmd.ts -h
 
     -h, --help     [arg:boolean]  - Show this help.
     -V, --version  [arg:boolean]  - Show the version number for this program.
-    -o, --outDir   [dir:string]   - Redirect output structure to the directory.
 
   Commands:
 
     help         [command:command]  - Show this help or the help of a sub-command.
     completions                     - Generate shell completions for zsh and bash.
+
+# denolize the files under the src directory.
+$ denolize src
+
+# denolize the files under the src directory and output to the deno directory.
+$ denolize src deno
 ```
 
 ## License

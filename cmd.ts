@@ -2,20 +2,12 @@ import { Command } from "https://deno.land/x/cliffy/command.ts";
 import { path } from "./deps.ts";
 import { denolize } from "./denolize.ts";
 
-type Option = {
-  outDir: string;
-};
-
-const command = new Command<Option>()
+const command = new Command()
   .name("denolize")
-  .version("0.0.1")
+  .version("0.0.2")
   .description("Transpile the package created for Node into the Deno module.")
-  .arguments("[rootDir:string]")
-  .option(
-    "-o, --outDir [dir:string]",
-    "Redirect output structure to the directory.",
-  )
-  .action(async ({ outDir = "dist" }, rootDir = ".") => {
+  .arguments("[rootDir:string] [outDir:string]")
+  .action(async (_, rootDir = ".", outDir = "dist") => {
     const encoder = new TextEncoder();
     for await (const source of denolize(rootDir)) {
       const outputPath = path.join(
