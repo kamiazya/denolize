@@ -15,7 +15,7 @@ jobs:
       - run: deno fmt --check
 
       - name: Release
-        if: startsWith(github.ref, 'refs/tags/v') && github.repository == 'ts-graphviz/deno'
+        if: startsWith(github.ref, 'refs/tags/v') && github.repository == 'kamiazya/denolize'
         uses: actions/create-release@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
