@@ -1,7 +1,4 @@
-import {
-  path,
-  ts,
-} from "./deps.ts";
+import { path, ts, snakeCase } from "./deps.ts";
 
 function isFile(path: string): boolean {
   try {
@@ -68,16 +65,27 @@ function resolveModuleName(
   return moduleName;
 }
 
-function denolizeFileName(name: string): string {
-  return name.replace(/-/g, "_").replace(/\/index.ts$/, "/mod.ts");
+export function denolizeFileName(name: string): string {
+  return name
+    .split("/")
+    .map((v) => {
+      const p = path.parse(v);
+      const n = snakeCase(p.name);
+      return p.ext ? n + p.ext : n;
+    })
+    .join("/")
+    .replace(/index.ts$/, "mod.ts");
 }
 
-export function denolizeSourceFile(sourceFile: ts.SourceFile): ts.SourceFile {
-  const result = ts.transform(sourceFile, [denoTransformer]);
+/**
+ * Convert Node.js format ts.SourceFile object to deno format.
+ */
+export function denolizeSourceFile(source: ts.SourceFile): ts.SourceFile {
+  const result = ts.transform(source, [denoTransformer]);
   result.dispose();
   const printer = ts.createPrinter();
   return ts.createSourceFile(
-    denolizeFileName(sourceFile.fileName),
+    denolizeFileName(source.fileName),
     printer.printFile(result.transformed[0]),
     ts.ScriptTarget.ESNext,
   );
