@@ -11,11 +11,11 @@ Transpile the package created for Node into the Deno module.
 ```bash
 $ deno install  --unstable --allow-read --allow-write \
     -n denolize \
-    https://raw.githubusercontent.com/kamiazya/denolize/master/cmd.ts
-Download https://raw.githubusercontent.com/kamiazya/denolize/master/cmd.ts
+    https://raw.githubusercontent.com/kamiazya/denolize/master/cli/mod.ts
+Download https://raw.githubusercontent.com/kamiazya/denolize/master/cli/mod.ts
 Download https://deno.land/x/cliffy/command.ts
 ...
-Compile https://raw.githubusercontent.com/kamiazya/denolize/master/cmd.ts
+Compile https://raw.githubusercontent.com/kamiazya/denolize/master/cli/mod.ts
 ✅ Successfully installed denolize
 ~/.deno/bin/denolize
 ```
