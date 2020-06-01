@@ -69,6 +69,9 @@ export function denolizeFileName(name: string): string {
   return name
     .split("/")
     .map((v) => {
+      if (v === "." || v === "..") {
+        return v;
+      }
       const p = path.parse(v);
       const n = snakeCase(p.name);
       return p.ext ? n + p.ext : n;
