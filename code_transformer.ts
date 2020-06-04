@@ -78,7 +78,7 @@ export function denolizeFileName(name: string): string {
       return p.ext ? n + p.ext : n;
     })
     .join("/")
-    .replace(/index.ts$/, "mod.ts");
+    .replace(/index.([j|t]sx?)$/, "mod.$1");
 }
 
 /**

@@ -30,6 +30,26 @@ function testDenolizeFileName() {
       input: "utils/ColorSchema",
       expected: "utils/color_schema",
     },
+    {
+      input: "utils/ColorSchema.jsx",
+      expected: "utils/color_schema.jsx",
+    },
+    {
+      input: "utils/ColorSchema.tsx",
+      expected: "utils/color_schema.tsx",
+    },
+    {
+      input: "index.js",
+      expected: "mod.js",
+    },
+    {
+      input: "index.tsx",
+      expected: "mod.tsx",
+    },
+    {
+      input: "index.jsx",
+      expected: "mod.jsx",
+    },
   ];
 
   for (const { input, expected } of cases) {
