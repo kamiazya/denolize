@@ -58,9 +58,10 @@ function resolveModuleName(
   const resolved = path.isAbsolute(moduleName)
     ? moduleName
     : path.resolve(dir, moduleName);
-  if (isFile(`${resolved}.ts`)) {
-    // resolved
-    return `${denolizeFileName(moduleName)}.ts`;
+  for (const ext of ['.ts', '.tsx', '.js', '.jsx']) {
+    if (isFile(`${resolved}${ext}`)) {
+      return `${denolizeFileName(moduleName)}${ext}`;
+    }
   }
   return moduleName;
 }

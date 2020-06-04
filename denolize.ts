@@ -7,23 +7,23 @@ function createWalker(
   exclude: string[],
 ): AsyncIterableIterator<fs.WalkEntry> {
   return fs.walk(rootDir, {
-    match: include.map((v) => path.globToRegExp(v)),
-    skip: exclude.map((v) => path.globToRegExp(v)),
+    match: include.map((v) => path.globToRegExp(v, { extended: true })),
+    skip: exclude.map((v) => path.globToRegExp(v, { extended: true })),
   });
 }
 
 export async function* denolize(
   rootDir: string,
   {
-    include = ["**/*.ts"],
+    include = ["**/*.{ts,tsx,js,jsx}"],
     exclude = [
       "**/node_modules/**/*",
       "**/__specs__/**/*",
       "**/__tests__/**/*",
       "**/__spec__/**/*",
       "**/__test__/**/*",
-      "**/*.test.ts",
-      "**/*.spec.ts",
+      "**/*.test.{ts,tsx,js,jsx}",
+      "**/*.spec.{ts,tsx,js,jsx}",
     ],
   }: { include?: string[]; exclude?: string[] } = {},
 ): AsyncIterableIterator<ts.SourceFile> {
