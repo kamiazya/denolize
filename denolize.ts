@@ -1,5 +1,9 @@
 import { fs, path, ts } from "./deps.ts";
-import { denolizeSourceFile } from "./code_transformer.ts";
+import { denolizeSourceFile, DenolizeFileOption } from "./code_transformer.ts";
+
+type DenolizeOption =
+  & { include?: string[]; exclude?: string[] }
+  & DenolizeFileOption;
 
 function createWalker(
   rootDir: string,
@@ -25,7 +29,8 @@ export async function* denolize(
       "**/*.test.{ts,tsx,js,jsx}",
       "**/*.spec.{ts,tsx,js,jsx}",
     ],
-  }: { include?: string[]; exclude?: string[] } = {},
+    ...denolizeFileOption
+  }: DenolizeOption = {},
 ): AsyncIterableIterator<ts.SourceFile> {
   const decoder = new TextDecoder();
   for await (const entry of createWalker(rootDir, include, exclude)) {
@@ -35,6 +40,6 @@ export async function* denolize(
       decoder.decode(buffer),
       ts.ScriptTarget.ESNext,
     );
-    yield denolizeSourceFile(source);
+    yield denolizeSourceFile(source, denolizeFileOption);
   }
 }
