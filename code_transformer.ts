@@ -70,9 +70,7 @@ function importAndExportDeclarationVisitorFactory(
     const mapping = option.imports[name];
     if (mapping !== undefined) {
       return ts.createStringLiteral(
-        typeof mapping === "string"
-          ? mapping
-          : mapping(distFileName),
+        typeof mapping === "string" ? mapping : mapping(distFileName),
       );
     }
     const dir = path.dirname(distFileName);
