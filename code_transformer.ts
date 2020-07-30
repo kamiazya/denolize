@@ -20,7 +20,6 @@ interface ImportMapping {
 
 type MappingFunction = (distFileName: string) => string | ImportMapping;
 
-
 type ImportMappingLike = string | MappingFunction | ImportMapping;
 export type DenolizeFileOption = {
   imports?: {
@@ -30,7 +29,7 @@ export type DenolizeFileOption = {
 
 function getImportStringLiteral(
   distFileName: string,
-  mapping: ImportMappingLike
+  mapping: ImportMappingLike,
 ): ts.StringLiteral {
   switch (typeof mapping) {
     case "object":
@@ -49,7 +48,7 @@ function getImportStringLiteral(
 
 function getTypeComment(
   distFileName: string,
-  mapping: ImportMappingLike
+  mapping: ImportMappingLike,
 ): string | undefined {
   switch (typeof mapping) {
     case "object":
@@ -91,7 +90,7 @@ function nodeVisitorFactory(
   return (node: ts.Node): ts.VisitResult<ts.Node> => {
     if (ts.isImportDeclaration(node)) {
       let name: string | null = null;
-      node.forEachChild(n => {
+      node.forEachChild((n) => {
         if (ts.isStringLiteral(n)) {
           name = n.text;
         }
@@ -107,7 +106,7 @@ function nodeVisitorFactory(
               node,
               ts.SyntaxKind.SingleLineCommentTrivia,
               ` @deno-types="${type}"`,
-              true
+              true,
             );
           }
         }

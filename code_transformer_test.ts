@@ -6,7 +6,6 @@ import {
 import { dedent } from "https://deno.land/x/lib/dedent.ts";
 import { denolizeSourceFile, DenolizeFileOption } from "./code_transformer.ts";
 
-
 testDenolizeFileName();
 testDenolizeSourceFile();
 
@@ -66,7 +65,6 @@ function testDenolizeFileName() {
     });
   }
 }
-
 
 function testDenolizeSourceFile() {
   const cases: {
@@ -129,11 +127,11 @@ function testDenolizeSourceFile() {
         const printer = ts.createPrinter();
         const denolized = denolizeSourceFile(
           ts.createSourceFile("", src, ts.ScriptTarget.ESNext),
-          option
+          option,
         );
         assertEquals(
-          printer.printFile(denolized).trim().replace('\r', ''),
-          expected.trim().replace('\r', '')
+          printer.printFile(denolized).trim().replace("\r", ""),
+          expected.trim().replace("\r", ""),
         );
       },
     });
