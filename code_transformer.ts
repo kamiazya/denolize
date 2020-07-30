@@ -13,13 +13,56 @@ function isRelative(path: string): boolean {
   return path.startsWith(".");
 }
 
-type MappingFunction = (distFileName: string) => string;
+interface ImportMapping {
+  type?: string;
+  import: string;
+}
 
+type MappingFunction = (distFileName: string) => string | ImportMapping;
+
+
+type ImportMappingLike = string | MappingFunction | ImportMapping;
 export type DenolizeFileOption = {
   imports?: {
-    [key: string]: string | MappingFunction;
+    [key: string]: ImportMappingLike;
   };
 };
+
+function getImportStringLiteral(
+  distFileName: string,
+  mapping: ImportMappingLike
+): ts.StringLiteral {
+  switch (typeof mapping) {
+    case "object":
+      return ts.createStringLiteral(mapping.import);
+    case "function":
+      const importMapping = mapping(distFileName);
+      if (typeof importMapping === "string") {
+        return ts.createStringLiteral(importMapping);
+      }
+      return ts.createStringLiteral(importMapping.import);
+    case "string":
+    default:
+      return ts.createStringLiteral(mapping);
+  }
+}
+
+function getTypeComment(
+  distFileName: string,
+  mapping: ImportMappingLike
+): string | undefined {
+  switch (typeof mapping) {
+    case "object":
+      return mapping.type;
+    case "function":
+      const importMapping = mapping(distFileName);
+      if (typeof importMapping !== "string") {
+        return importMapping.type;
+      }
+    default:
+      return undefined;
+  }
+}
 
 function denoTransformerFactory(
   distFileName: string,
@@ -46,12 +89,33 @@ function nodeVisitorFactory(
   option: Required<DenolizeFileOption>,
 ): ts.Visitor {
   return (node: ts.Node): ts.VisitResult<ts.Node> => {
+    if (ts.isImportDeclaration(node)) {
+      let name: string | null = null;
+      node.forEachChild(n => {
+        if (ts.isStringLiteral(n)) {
+          name = n.text;
+        }
+      });
+      if (name !== null) {
+        const mapping = option.imports[name];
+        if (mapping !== undefined) {
+          const type = getTypeComment(distFileName, mapping);
+          if (type) {
+            // FIXME
+            (node as any)["emitNode"] = {};
+            ts.addSyntheticLeadingComment(
+              node,
+              ts.SyntaxKind.SingleLineCommentTrivia,
+              ` @deno-types="${type}"`,
+              true
+            );
+          }
+        }
+      }
+    }
     const visitor: ts.Visitor =
       ts.isImportDeclaration(node) || ts.isExportDeclaration(node)
-        ? importAndExportDeclarationVisitorFactory(
-          distFileName,
-          option,
-        )
+        ? importAndExportDeclarationVisitorFactory(distFileName, option)
         : nodeVisitorFactory(sourceFileName, distFileName, context, option);
 
     return ts.visitEachChild(node, visitor, context);
@@ -69,9 +133,7 @@ function importAndExportDeclarationVisitorFactory(
     const name = node.text;
     const mapping = option.imports[name];
     if (mapping !== undefined) {
-      return ts.createStringLiteral(
-        typeof mapping === "string" ? mapping : mapping(distFileName),
-      );
+      return getImportStringLiteral(distFileName, mapping);
     }
     const dir = path.dirname(distFileName);
     const moduleName = resolveModuleName(name, dir);
