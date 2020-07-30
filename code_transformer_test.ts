@@ -2,7 +2,7 @@ import { ts } from "./deps.ts";
 import { denolizeFileName } from "./code_transformer.ts";
 import {
   assertEquals,
-} from "https://deno.land/std/testing/asserts.ts";
+} from "https://deno.land/std@0.62.0/testing/asserts.ts";
 import { dedent } from "https://deno.land/x/lib/dedent.ts";
 import { denolizeSourceFile, DenolizeFileOption } from "./code_transformer.ts";
 

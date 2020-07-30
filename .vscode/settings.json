@@ -1,6 +1,5 @@
 {
   "deno.enable": true,
-  "deno.autoFmtOnSave": true,
   "markdownlint.config": {
     "default": true,
     "MD041": false
