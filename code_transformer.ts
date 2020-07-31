@@ -167,7 +167,7 @@ export function denolizeFileName(name: string): string {
       }
       if (v.endsWith(".d.ts")) {
         const n = snakeCase(v.slice(0, v.length - 5));
-        return `${n}.d.ts`
+        return `${n}.d.ts`;
       }
       const p = path.parse(v);
       const n = snakeCase(p.name);
