@@ -19,8 +19,16 @@ function testDenolizeFileName() {
       expected: "mod.ts",
     },
     {
+      input: "index.d.ts",
+      expected: "types.ts",
+    },
+    {
       input: "hoge/index.ts",
       expected: "hoge/mod.ts",
+    },
+    {
+      input: "hoge/ColorSchema.d.ts",
+      expected: "hoge/color_schema.d.ts",
     },
     {
       input: "ColorSchema.ts",
@@ -45,6 +53,10 @@ function testDenolizeFileName() {
     {
       input: "index.js",
       expected: "mod.js",
+    },
+    {
+      input: "index.mjs",
+      expected: "mod.mjs",
     },
     {
       input: "index.tsx",

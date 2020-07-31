@@ -150,7 +150,7 @@ function resolveModuleName(
   const resolved = path.isAbsolute(moduleName)
     ? moduleName
     : path.resolve(dir, moduleName);
-  for (const ext of [".ts", ".tsx", ".js", ".jsx"]) {
+  for (const ext of [".ts", ".tsx", ".js", ".mjs", ".jsx"]) {
     if (isFile(`${resolved}${ext}`)) {
       return `${denolizeFileName(moduleName)}${ext}`;
     }
@@ -165,12 +165,17 @@ export function denolizeFileName(name: string): string {
       if (v === "." || v === "..") {
         return v;
       }
+      if (v.endsWith(".d.ts")) {
+        const n = snakeCase(v.slice(0, v.length - 5));
+        return `${n}.d.ts`
+      }
       const p = path.parse(v);
       const n = snakeCase(p.name);
       return p.ext ? n + p.ext : n;
     })
     .join("/")
-    .replace(/index.([j|t]sx?)$/, "mod.$1");
+    .replace(/index.d.ts$/, "types.ts")
+    .replace(/index.(m?[j|t]sx?)$/, "mod.$1");
 }
 
 /**
