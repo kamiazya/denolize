@@ -80,6 +80,7 @@ function testDenolizeFileName() {
 
 function testDenolizeSourceFile() {
   const cases: {
+    filename?: string;
     src: string;
     option?: DenolizeFileOption;
     expected: string;
@@ -131,14 +132,48 @@ function testDenolizeSourceFile() {
       import { renderToStaticMarkup } from "https://cdn.pika.dev/react-dom@16.13.1/server";
       `,
     },
+    {
+      filename: "hoge.d.ts",
+      src: dedent`
+      import React from 'react';
+      `,
+      option: {
+        imports: {
+          react: {
+            type: "https://deno.land/x/types/react/v16.13.1/react.d.ts",
+            import: "https://cdn.pika.dev/react@16.13.1",
+          },
+        },
+      },
+      expected: dedent`
+      import React from "https://deno.land/x/types/react/v16.13.1/react.d.ts";
+      `,
+    },
+    {
+      filename: "types.ts",
+      src: dedent`
+      import React from 'react';
+      `,
+      option: {
+        imports: {
+          react: {
+            type: "https://deno.land/x/types/react/v16.13.1/react.d.ts",
+            import: "https://cdn.pika.dev/react@16.13.1",
+          },
+        },
+      },
+      expected: dedent`
+      import React from "https://deno.land/x/types/react/v16.13.1/react.d.ts";
+      `,
+    },
   ];
-  cases.forEach(({ src, expected, option }, index) => {
+  cases.forEach(({ filename = "", src, expected, option }, index) => {
     Deno.test({
-      name: `denolizeSourceFile ${index}`,
+      name: `denolizeSourceFile ${index}` + (filename ? `(${filename})` : ""),
       fn() {
         const printer = ts.createPrinter();
         const denolized = denolizeSourceFile(
-          ts.createSourceFile("", src, ts.ScriptTarget.ESNext),
+          ts.createSourceFile(filename, src, ts.ScriptTarget.ESNext),
           option,
         );
         assertEquals(

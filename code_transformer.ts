@@ -31,6 +31,12 @@ function getImportStringLiteral(
   distFileName: string,
   mapping: ImportMappingLike,
 ): ts.StringLiteral {
+  if (isTypesFile(distFileName)) {
+    const type = getTypeFromMapping(distFileName, mapping);
+    if (type !== undefined) {
+      return ts.createStringLiteral(type);
+    }
+  }
   switch (typeof mapping) {
     case "object":
       return ts.createStringLiteral(mapping.import);
@@ -46,7 +52,11 @@ function getImportStringLiteral(
   }
 }
 
-function getTypeComment(
+function isTypesFile(distFileName: string): boolean {
+  return distFileName.endsWith("types.ts") || distFileName.endsWith(".d.ts");
+}
+
+function getTypeFromMapping(
   distFileName: string,
   mapping: ImportMappingLike,
 ): string | undefined {
@@ -98,8 +108,8 @@ function nodeVisitorFactory(
       if (name !== null) {
         const mapping = option.imports[name];
         if (mapping !== undefined) {
-          const type = getTypeComment(distFileName, mapping);
-          if (type) {
+          const type = getTypeFromMapping(distFileName, mapping);
+          if (type !== undefined && !isTypesFile(distFileName)) {
             // FIXME
             (node as any)["emitNode"] = {};
             ts.addSyntheticLeadingComment(
