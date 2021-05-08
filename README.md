@@ -27,7 +27,7 @@ Compile https://raw.githubusercontent.com/kamiazya/denolize/master/cli/mod.ts
 $ denolize -h
 
   Usage:   denolize [rootDir:string] [outDir:string]
-  Version: v0.0.7
+  Version: v0.0.8
 
   Description:
 

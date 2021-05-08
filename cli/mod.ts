@@ -2,7 +2,7 @@ import { path, Command, denolize } from "./deps.ts";
 
 export const command = new Command()
   .name("denolize")
-  .version("0.0.7")
+  .version("0.0.8")
   .description("Transpile the package created for Node into the Deno module.")
   .arguments("[rootDir:string] [outDir:string]")
   .action(async (_, rootDir = ".", outDir = "dist") => {
