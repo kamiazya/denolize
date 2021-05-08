@@ -162,7 +162,7 @@ function resolveModuleName(
     : path.resolve(dir, moduleName);
   for (const ext of [".ts", ".tsx", ".js", ".mjs", ".jsx"]) {
     if (isFile(`${resolved}${ext}`)) {
-      return `${denolizeFileName(moduleName)}${ext}`;
+      return denolizeFileName(`${moduleName}${ext}`);
     }
   }
   return moduleName;

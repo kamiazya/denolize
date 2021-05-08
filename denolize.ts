@@ -1,7 +1,7 @@
 import { fs, path, ts } from "./deps.ts";
 import { denolizeSourceFile, DenolizeFileOption } from "./code_transformer.ts";
 
-type DenolizeOption =
+export type DenolizeOption =
   & { include?: string[]; exclude?: string[] }
   & DenolizeFileOption;
 

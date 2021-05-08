@@ -1,4 +1,5 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
 # denolize
 
@@ -26,7 +27,7 @@ Compile https://raw.githubusercontent.com/kamiazya/denolize/master/cli/mod.ts
 $ denolize -h
 
   Usage:   denolize [rootDir:string] [outDir:string]
-  Version: v0.0.3
+  Version: v0.0.7
 
   Description:
 

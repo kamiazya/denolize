@@ -1,8 +1,6 @@
 import { ts } from "./deps.ts";
 import { denolizeFileName } from "./code_transformer.ts";
-import {
-  assertEquals,
-} from "https://deno.land/std@0.62.0/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.95.0/testing/asserts.ts";
 import { dedent } from "https://deno.land/x/lib/dedent.ts";
 import { denolizeSourceFile, DenolizeFileOption } from "./code_transformer.ts";
 
@@ -48,6 +46,10 @@ function testDenolizeFileName() {
     },
     {
       input: "utils/ColorSchema.tsx",
+      expected: "utils/color_schema.tsx",
+    },
+    {
+      input: "utils/color.schema.tsx",
       expected: "utils/color_schema.tsx",
     },
     {
