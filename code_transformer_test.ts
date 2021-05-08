@@ -1,7 +1,7 @@
 import { ts } from "./deps.ts";
 import { denolizeFileName } from "./code_transformer.ts";
 import { assertEquals } from "https://deno.land/std@0.95.0/testing/asserts.ts";
-import { dedent } from "https://deno.land/x/lib/dedent.ts";
+import { dedent } from "https://x.kite.run/lib/dedent.ts";
 import { denolizeSourceFile, DenolizeFileOption } from "./code_transformer.ts";
 
 testDenolizeFileName();
