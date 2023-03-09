@@ -50,6 +50,11 @@ $ denolize src
 $ denolize src deno
 ```
 
+## Articles
+
+- [Deno.js Tutorial to Transpile Node.js Packages to Deno Modules Using denolize Library in TypeScript](https://codingdiksha.com/transpile-node-js-packages-to-deno-modules-using-denolize-library-in-typescript-in-deno-js/)
+
+
 ## License
 
 This software is released under the MIT License, see [LICENSE](./LICENSE).
